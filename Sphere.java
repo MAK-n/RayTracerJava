@@ -5,6 +5,8 @@ public class Sphere extends Hitable {
         this.center = center;
         this.radius = Math.max(0, radius);
     }
+
+    @Override
     public boolean hit(Ray r, double t_min, double t_max, HitRecord rec){
         Vec3 oc= center.sub(r.origin());
         double a= r.direction().length_squared();
@@ -26,10 +28,9 @@ public class Sphere extends Hitable {
 
         rec.t = root;
         rec.p = r.at(rec.t);
-        //rec.normal = (rec.p.sub( center)).divide(radius);
 
         Vec3 outward_normal = (rec.p.sub( center)).divide( radius);
-        rec.normal=rec.set_face_normal(r, outward_normal);
+        rec.set_face_normal(r, outward_normal);
 
 
         return true;

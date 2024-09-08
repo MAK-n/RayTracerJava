@@ -1,6 +1,5 @@
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 class Main {
@@ -20,7 +19,7 @@ class Main {
     
     // }
 
-    public static Vec3 rayColour(Ray r, Hitable world) {
+    public static Vec3 rayColour(Ray r, HitableList world) {
         // if(hit(new Vec3(0,0,-1), 0.5, r)==true){
         //     return new Vec3(1,0,0);
         // }
@@ -30,11 +29,11 @@ class Main {
             return new Vec3(rec.normal.x()+1,rec.normal.y()+1,rec.normal.z()+1).multiply(0.5);
 
         }
-        else{
+        
+            //Vec3 unit_dir = r.direction().divide(r.direction().length_squared());
             Vec3 unit_dir = r.direction();
             double t = -0.5 * (unit_dir.y() + 1.0);
             return (new Vec3(1,1,1).multiply(t)).add(new Vec3(0.5,0.7,1).multiply(1-t));
-        }
 
         // Vec3 rayDirection= r.direction();
         // double a = -0.5*(rayDirection.y()+1.0);
@@ -57,12 +56,12 @@ class Main {
 
         // World
 
-        ArrayList<Hitable> list = new ArrayList<Hitable>();
-        list.add(new Sphere(new Vec3(0.0,0.0,-1.0), 0.5));
-        // list.add(new Sphere(new Vec3(0.3,0.0,-1.0), 0.3));
-        list.add(new Sphere(new Vec3(0.0,-100.5,-1.0), 100));
-
-        Hitable world = new HitableList(list);
+        //ArrayList<Hitable> list = new ArrayList<Hitable>();
+        
+        HitableList world = new HitableList();
+        world.add(new Sphere(new Vec3(0.0,0.0,-1.0), 0.5));
+        // world.add(new Sphere(new Vec3(0.3,0.0,-1.0), 0.3));
+        world.add(new Sphere(new Vec3(0.0,-100.5,-1.0), 100));
 
 
         //Vectors across horizontal and vertical viewport edges

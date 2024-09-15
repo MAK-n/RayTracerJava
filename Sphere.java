@@ -20,17 +20,18 @@ public class Sphere extends Hitable {
         double sqrtd = Math.sqrt(discriminant);
 
         double root = (h - sqrtd) / a;
-        if (root < t_min || t_max < root) {
+        if (root <= t_min || t_max <= root) {
             root = (h + sqrtd) / a;
             if (root <= t_min || t_max <= root)
                 return false;
         }
 
+
         rec.t = root;
         rec.p = r.at(rec.t);
 
-        Vec3 outward_normal = (rec.p.sub( center)).divide( radius);
-        rec.set_face_normal(r, outward_normal);
+        rec.normal = (rec.p.sub( center)).divide( radius);
+        //rec.set_face_normal(r, outward_normal);
 
 
         return true;

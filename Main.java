@@ -24,9 +24,9 @@ class Main {
         //     return new Vec3(1,0,0);
         // }
         HitRecord rec= new HitRecord();
-        if(world.hit(r, 0.0, Double.MAX_VALUE, rec)==true) {
-            //return (rec.normal.add(new Vec3(1,1,1))).multiply(0.5);
-            return new Vec3(rec.normal.x()+1,rec.normal.y()+1,rec.normal.z()+1).multiply(0.5);
+        if(world.hit(r, 0.0, Double.MAX_VALUE, rec)) {
+            return (rec.normal.add(new Vec3(1,1,1))).multiply(0.5);
+            //return new Vec3(rec.normal.x()+1,rec.normal.y()+1,rec.normal.z()+1).multiply(0.5);
 
         }
         
@@ -58,10 +58,12 @@ class Main {
 
         //ArrayList<Hitable> list = new ArrayList<Hitable>();
         
+
         HitableList world = new HitableList();
         world.add(new Sphere(new Vec3(0.0,0.0,-1.0), 0.5));
         // world.add(new Sphere(new Vec3(0.3,0.0,-1.0), 0.3));
         world.add(new Sphere(new Vec3(0.0,-100.5,-1.0), 100));
+
 
 
         //Vectors across horizontal and vertical viewport edges

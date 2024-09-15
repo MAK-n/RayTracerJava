@@ -2,15 +2,15 @@ import java.util.ArrayList;
 
 public class HitableList extends Hitable {
 
-    ArrayList<Sphere> objects = new ArrayList<>();
-    public HitableList(ArrayList<Sphere> list) {
-        this.objects = new ArrayList<Sphere>(list);
+    ArrayList<Hitable> objects = new ArrayList<>();
+    public HitableList(ArrayList<Hitable> list) {
+        this.objects = new ArrayList<Hitable>(list);
     }
-    HitableList() { objects = new ArrayList<Sphere>(); }
+    HitableList() { objects = new ArrayList<Hitable>(); }
 
     void clear() { objects.clear(); }
 
-    void add(Sphere object) {
+    void add(Hitable object) {
         objects.add(object);
     }
 
@@ -23,10 +23,13 @@ public class HitableList extends Hitable {
 
 
         for(int i=0;i<objects.size();i++) {
-            if ((objects.get(i)).hit(r, t_min, closest_so_far, temp_rec)==true) {
+            if ((objects.get(i)).hit(r, t_min, closest_so_far, temp_rec)) {
                 hit_anything = true;
                 closest_so_far = temp_rec.t;
-                rec = temp_rec;
+                
+                rec.p = temp_rec.p;
+                rec.normal = temp_rec.normal;
+                rec.t = temp_rec.t;
             }
         }
 

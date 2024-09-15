@@ -23,6 +23,7 @@ public class HitRecord {
 
         front_face = Vec3.dot(r.direction(), outward_normal) < 0;
         normal= front_face ? outward_normal : outward_normal.negate();
+        //System.out.println(normal.x()+" "+normal.y()+" "+normal.z());
     }
 
 }

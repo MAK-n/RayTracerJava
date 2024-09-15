@@ -7,7 +7,7 @@ public class Sphere extends Hitable {
     }
 
     @Override
-    public boolean hit(Ray r, double t_min, double t_max, HitRecord rec){
+    public boolean hit(Ray r, Interval ray_t, HitRecord rec){
         Vec3 oc= center.sub(r.origin());
         double a= r.direction().length_squared();
         //double b= -2.0*Vec3.dot(oc, r.direction());
@@ -20,9 +20,9 @@ public class Sphere extends Hitable {
         double sqrtd = Math.sqrt(discriminant);
 
         double root = (h - sqrtd) / a;
-        if (root <= t_min || t_max <= root) {
+        if (!ray_t.surrounds(root)) {
             root = (h + sqrtd) / a;
-            if (root <= t_min || t_max <= root)
+            if (!ray_t.surrounds(root))
                 return false;
         }
 
@@ -30,8 +30,8 @@ public class Sphere extends Hitable {
         rec.t = root;
         rec.p = r.at(rec.t);
 
-        rec.normal = (rec.p.sub( center)).divide( radius);
-        //rec.set_face_normal(r, outward_normal);
+        Vec3 outward_normal = (rec.p.sub( center)).divide( radius);
+        rec.set_face_normal(r, outward_normal);
 
 
         return true;

@@ -1,3 +1,3 @@
 public abstract class Hitable {
-    public abstract boolean hit(Ray r, double t_min, double t_max, HitRecord rec);
+    public abstract boolean hit(Ray r, Interval ray_t, HitRecord rec);
 }

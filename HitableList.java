@@ -16,14 +16,14 @@ public class HitableList extends Hitable {
 
 
 
-    public boolean hit(Ray r, double t_min, double t_max, HitRecord rec) {
+    public boolean hit(Ray r, Interval ray_t, HitRecord rec) {
         HitRecord temp_rec= new HitRecord();
         boolean hit_anything = false;
-        double closest_so_far = t_max;
+        double closest_so_far = ray_t.max;
 
 
         for(int i=0;i<objects.size();i++) {
-            if ((objects.get(i)).hit(r, t_min, closest_so_far, temp_rec)) {
+            if ((objects.get(i)).hit(r,new Interval(ray_t.min, closest_so_far), temp_rec)) {
                 hit_anything = true;
                 closest_so_far = temp_rec.t;
                 

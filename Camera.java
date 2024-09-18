@@ -11,32 +11,38 @@ public class Camera {
     Vec3 pixel100Loc;
     Vec3 deltaU;
     Vec3 deltaV;
+    double samplesPerPixel=10.0;
+    double pixelSamplesScale;
 
     public void render(HitableList world) {
         initialize();
 
-        FileWriter myWriter = null;
+        FileWriter myWriter;
         try {
             myWriter = new FileWriter("Image.ppm");
             myWriter.write(String.format("P3\n%d %d\n255\n", imageWidth, imageHeight));
+            final Interval intensity = new Interval(0.0, 0.999);
 
             for (int j = 0; j < imageHeight; j++) {
                 for (int i = 0; i < imageWidth; i++) {
 
-                    Vec3 pixelCenter= pixel100Loc.add(deltaU.multiply(i)).add(deltaV.multiply(j));
-                    Vec3 rayDirection= pixelCenter.sub(camCentre);
 
-                    Ray ray= new Ray(camCentre, rayDirection);
+                    Vec3 pixelColour= new Vec3(0,0,0);
 
-                    Vec3 clr= rayColour(ray, world);
+                    for (int s = 0; s < samplesPerPixel; s++) {
+                        Ray r = getRay(i, j);
+                        pixelColour= pixelColour.add(rayColour(r, world));
+                    }
+                    pixelColour=pixelColour.multiply(pixelSamplesScale);
+                    // Clamp and format color values
+                    int r = (int) Math.min(255, Math.max(0, intensity.clamp(pixelColour.x()) * 255.999));
+                    int g = (int) Math.min(255, Math.max(0, intensity.clamp(pixelColour.y()) * 255.999));
+                    int b = (int) Math.min(255, Math.max(0, intensity.clamp(pixelColour.z()) * 255.999));
+
+                    myWriter.write(String.format("%d %d %d\n", r, g, b));
 
 
-                    clr= clr.multiply(255.999);
 
-                    myWriter.write(String.format("%d %d %d\n",
-                    (int) clr.x(),
-                    (int) clr.y(),
-                    (int) clr.z()));
                 }
             }
             myWriter.close();
@@ -50,19 +56,19 @@ public class Camera {
 
     private void initialize(){
          //image
-         aspectRatio = 16.0/9.0;
-         imageWidth = 400;
-         int imageHeight = (int) (imageWidth/aspectRatio);
-         imageHeight = (imageHeight < 1) ? 1 : imageHeight;
+        aspectRatio = 16.0/9.0;
+        imageWidth = 400;
+        int imageHeight = (int) (imageWidth/aspectRatio);
+        this.imageHeight = (imageHeight < 1) ? 1 : imageHeight;
  
          //Camera
-         double focalLength = 1.0;
-         double viewportHeight = 2.0;
-         double viewportWidth = viewportHeight * aspectRatio;
-         camCentre= new Vec3(0,0,0);
+        double focalLength = 1.0;
+        double viewportHeight = 2.0;
+        double viewportWidth = viewportHeight * aspectRatio;
+        camCentre= new Vec3(0,0,0);
  
          // World
- 
+        pixelSamplesScale= 1.0/samplesPerPixel;
          //ArrayList<Hitable> list = new ArrayList<Hitable>();
          
  
@@ -85,6 +91,23 @@ public class Camera {
          Vec3 viewportUpperLeft= camCentre.sub(new Vec3(0,0,focalLength)).sub(viewportV.divide(2)).sub(viewportU.divide(2));
          pixel100Loc= viewportUpperLeft.add(deltaU.add(deltaV).multiply(0.5));
  
+    }
+
+    Ray getRay(int i, int j) {
+        // Construct Camera Ray from the origin and directed at the randomly sampled pixel
+        // point around the location i,j
+
+        Vec3 offset= sampleSquare();
+
+        Vec3 pixelSample= pixel100Loc.add(deltaU.multiply(i+offset.x())).add(deltaV.multiply(j+offset.y()));
+        Vec3 rayDirection= pixelSample.sub(camCentre);
+        return new Ray(camCentre, rayDirection);
+
+    }
+
+    Vec3 sampleSquare(){
+        // Generate a random point in the sample square [-0.5,0.5] to [-0.5,0.5]
+        return new Vec3(Utils.randomDoubleZeroToOne()-0.5,Utils.randomDoubleZeroToOne()-0.5, 0.0);
     }
 
     private Vec3 rayColour(Ray r, HitableList world) {

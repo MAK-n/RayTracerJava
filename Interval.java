@@ -22,6 +22,13 @@ public class Interval {
         return this.min < x && x < this.max;
     }
 
+    double clamp(double x){
+        if(x < this.min) return this.min;
+        if(x > this.max) return this.max;
+        return x;
+    }
+
+
     static final Interval EMPTY = new Interval(Double.MIN_VALUE,Double.MAX_VALUE);
     static final Interval UNIVERSE = new Interval(Double.MIN_VALUE,Double.MAX_VALUE);
 }

@@ -47,7 +47,7 @@ class Vec3 {
     public double length(){
         return Math.sqrt(e[0]*e[0]+e[1]*e[1]+e[2]*e[2]);
     }
-    public double length_squared(){
+    public double lengthSquared(){
         return e[0]*e[0]+e[1]*e[1]+e[2]*e[2];
     }
     public static double dot(Vec3 u, Vec3 v) {
@@ -63,4 +63,30 @@ class Vec3 {
     public static Vec3 unitVector(Vec3 v) {
         return v.divide(v.length());
     }
+
+    public static Vec3 random() {
+        return new Vec3(Utils.randomDouble(), Utils.randomDouble(), Utils.randomDouble());
+    }
+
+    public static Vec3 random(double min, double max) {
+        return new Vec3(Utils.randomDouble(min,max), Utils.randomDouble(min,max), Utils.randomDouble(min,max));
+    }
+
+    static Vec3 randomUnitVector() {
+        while (true) {
+            Vec3 p = Vec3.random(-1,1);
+            double lensq = p.lengthSquared();
+            if (1e-160 < lensq && lensq <= 1)
+                return p.divide((Math.sqrt(lensq)));
+        }
+    }
+    
+    static Vec3 randomOnHemisphere(Vec3 normal) {
+        Vec3 onUnitSphere = randomUnitVector();
+        if (dot(onUnitSphere, normal) > 0.0) // In the same hemisphere as the normal
+            return onUnitSphere;
+        else
+            return onUnitSphere.negate();
+    }
+    
 }

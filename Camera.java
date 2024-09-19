@@ -13,6 +13,14 @@ public class Camera {
     Vec3 deltaV;
     double samplesPerPixel=10.0;
     double pixelSamplesScale;
+    int maxDepth=50;
+
+    static double linearToGamma(double linear_component){
+    if (linear_component > 0)
+        return Math.sqrt(linear_component);
+
+    return 0;
+    }
 
     public void render(HitableList world) {
         initialize();
@@ -31,15 +39,24 @@ public class Camera {
 
                     for (int s = 0; s < samplesPerPixel; s++) {
                         Ray r = getRay(i, j);
-                        pixelColour= pixelColour.add(rayColour(r, world));
+                        pixelColour= pixelColour.add(rayColour(r, world, maxDepth));
                     }
                     pixelColour=pixelColour.multiply(pixelSamplesScale);
-                    // Clamp and format color values
-                    int r = (int) Math.min(255, Math.max(0, intensity.clamp(pixelColour.x()) * 255.999));
-                    int g = (int) Math.min(255, Math.max(0, intensity.clamp(pixelColour.y()) * 255.999));
-                    int b = (int) Math.min(255, Math.max(0, intensity.clamp(pixelColour.z()) * 255.999));
+                    
+                    
+                    double r = linearToGamma(pixelColour.x());
+                    double g = linearToGamma(pixelColour.y());
+                    double b = linearToGamma(pixelColour.z());
 
-                    myWriter.write(String.format("%d %d %d\n", r, g, b));
+                    
+                    
+                    // Clamp and format color values
+                    int rByte = (int)Math.min(255, Math.max(0, intensity.clamp(r) * 255.999));
+                    int gByte = (int)Math.min(255, Math.max(0, intensity.clamp(g) * 255.999));
+                    int bByte = (int)Math.min(255, Math.max(0, intensity.clamp(b) * 255.999));
+
+
+                    myWriter.write(String.format("%d %d %d\n", rByte, gByte, bByte));
 
 
 
@@ -107,17 +124,22 @@ public class Camera {
 
     Vec3 sampleSquare(){
         // Generate a random point in the sample square [-0.5,0.5] to [-0.5,0.5]
-        return new Vec3(Utils.randomDoubleZeroToOne()-0.5,Utils.randomDoubleZeroToOne()-0.5, 0.0);
+        return new Vec3(Utils.randomDouble()-0.5,Utils.randomDouble()-0.5, 0.0);
     }
 
-    private Vec3 rayColour(Ray r, HitableList world) {
+    private Vec3 rayColour(Ray r, HitableList world, int Depth) {
+        if(Depth<=0){
+            return new Vec3(0,0,0);
+        }
         HitRecord rec= new HitRecord();
         if(world.hit(r, new Interval(0.0, Double.MAX_VALUE), rec)) {
-            return (rec.normal.add(new Vec3(1,1,1))).multiply(0.5);
+            Vec3 direction= rec.normal.add(Vec3.randomOnHemisphere(rec.normal));
+            return rayColour(new Ray(rec.p, direction), world,Depth-1).multiply(0.5);
+            //return (rec.normal.add(new Vec3(1,1,1))).multiply(0.5);
         }
         
         Vec3 unit_dir = r.direction();
-        double t = -0.5 * (unit_dir.y() + 1.0);
+        double t = 0.5 * (-unit_dir.y() + 1.0);
         return (new Vec3(1,1,1).multiply(t)).add(new Vec3(0.5,0.7,1).multiply(1-t));
 
     }

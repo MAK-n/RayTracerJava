@@ -41,6 +41,7 @@ public class Camera {
                         Ray r = getRay(i, j);
                         pixelColour= pixelColour.add(rayColour(r, world, maxDepth));
                     }
+                    
                     pixelColour=pixelColour.multiply(pixelSamplesScale);
                     
                     
@@ -51,9 +52,9 @@ public class Camera {
                     
                     
                     // Clamp and format color values
-                    int rByte = (int)Math.min(255, Math.max(0, intensity.clamp(r) * 255.999));
-                    int gByte = (int)Math.min(255, Math.max(0, intensity.clamp(g) * 255.999));
-                    int bByte = (int)Math.min(255, Math.max(0, intensity.clamp(b) * 255.999));
+                    int rByte = (int)(intensity.clamp(r) * 255.999);
+                    int gByte = (int)(intensity.clamp(g) * 255.999);
+                    int bByte = (int)(intensity.clamp(b) * 255.999);
 
 
                     myWriter.write(String.format("%d %d %d\n", rByte, gByte, bByte));
@@ -74,7 +75,7 @@ public class Camera {
     private void initialize(){
          //image
         aspectRatio = 16.0/9.0;
-        imageWidth = 400;
+        //imageWidth = 400;
         int imageHeight = (int) (imageWidth/aspectRatio);
         this.imageHeight = (imageHeight < 1) ? 1 : imageHeight;
  
@@ -88,11 +89,11 @@ public class Camera {
         pixelSamplesScale= 1.0/samplesPerPixel;
          //ArrayList<Hitable> list = new ArrayList<Hitable>();
          
- 
-         HitableList world = new HitableList();
-         world.add(new Sphere(new Vec3(0.0,0.0,-1.0), 0.5));
-         //world.add(new Sphere(new Vec3(0.3,0.0,-1.0), 0.3));
-         world.add(new Sphere(new Vec3(0.0,-100.5,-1.0), 100));
+        //CHECK THISSS
+        //  HitableList world = new HitableList();
+        //  world.add(new Sphere(new Vec3(0.0,0.0,-1.0), 0.5));
+        //  //world.add(new Sphere(new Vec3(0.3,0.0,-1.0), 0.3));
+        //  world.add(new Sphere(new Vec3(0.0,-100.5,-1.0), 100));
  
  
  
@@ -132,9 +133,18 @@ public class Camera {
             return new Vec3(0,0,0);
         }
         HitRecord rec= new HitRecord();
-        if(world.hit(r, new Interval(0.0, Double.MAX_VALUE), rec)) {
-            Vec3 direction= rec.normal.add(Vec3.randomOnHemisphere(rec.normal));
-            return rayColour(new Ray(rec.p, direction), world,Depth-1).multiply(0.5);
+        if(world.hit(r, new Interval(0.001, Double.MAX_VALUE), rec)) {
+            Ray scattered= new Ray();
+            Vec3 attenuation= new Vec3();
+            if(rec.mat.scatter(r, rec, attenuation, scattered)) {
+                return rayColour(scattered, world, Depth-1).multiply(attenuation);
+            }
+            else{
+                return new Vec3(0,0,0);
+            }
+            
+            // Vec3 direction= rec.normal.add(Vec3.randomOnHemisphere(rec.normal));
+            // return rayColour(new Ray(rec.p, direction), world,Depth-1).multiply(0.5);
             //return (rec.normal.add(new Vec3(1,1,1))).multiply(0.5);
         }
         

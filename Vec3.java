@@ -41,6 +41,9 @@ class Vec3 {
     public Vec3 multiply(double t){
         return new Vec3(e[0]*t,e[1]*t,e[2]*t);
     }
+    public Vec3 multiply(Vec3 v){
+        return new Vec3(e[0]*v.e[0],e[1]*v.e[1],e[2]*v.e[2]);
+    }
     public Vec3 divide(double t){
         return multiply(1/t);
     }
@@ -62,6 +65,11 @@ class Vec3 {
 
     public static Vec3 unitVector(Vec3 v) {
         return v.divide(v.length());
+    }
+
+    public String toString() {
+        String s="("+e[0]+","+e[1]+","+e[2]+")";
+        return s;
     }
 
     public static Vec3 random() {
@@ -88,5 +96,10 @@ class Vec3 {
         else
             return onUnitSphere.negate();
     }
-    
+
+    boolean nearZero(){
+        double s = 1e-8;
+        return (Math.abs(e[0]) < s) && (Math.abs(e[1]) < s) && (Math.abs(e[2]) < s);
+    }
+
 }

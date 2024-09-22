@@ -2,8 +2,10 @@ public class HitRecord {
     public Vec3 p;
     public Vec3 normal;
     public double t;
+    public Material mat;
+    
 
-    HitRecord(Vec3 p, Vec3 normal, double t) {
+    HitRecord(Vec3 p, Vec3 normal, double t, Material mat) {
         this.p = p;
         this.normal = normal;
         this.t = t;

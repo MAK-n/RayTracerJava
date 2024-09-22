@@ -1,9 +1,11 @@
 public class Sphere extends Hitable {
     private Vec3 center;
     private double radius;
-    public Sphere(Vec3 center, double radius) {
+    public Material mat;
+    public Sphere(Vec3 center, double radius, Material mat) {
         this.center = center;
         this.radius = Math.max(0, radius);
+        this.mat= mat;
     }
 
     @Override
@@ -27,11 +29,12 @@ public class Sphere extends Hitable {
         }
 
 
+        /*Update hit record*/
         rec.t = root;
         rec.p = r.at(rec.t);
-
         Vec3 outward_normal = (rec.p.sub( center)).divide( radius);
         rec.set_face_normal(r, outward_normal);
+        rec.mat = this.mat;
 
 
         return true;

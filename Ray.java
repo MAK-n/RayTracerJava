@@ -1,6 +1,6 @@
 
 
-public class Ray {
+public class Ray extends Vec3 {
     private final Vec3 origin;
     private final Vec3 direction;
 
@@ -23,4 +23,5 @@ public class Ray {
     public Vec3 at(double t){
         return origin.add(direction.multiply(t));
     }
+    
 }

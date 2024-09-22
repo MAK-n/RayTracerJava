@@ -1,3 +1,5 @@
 *.class
 *.ppm 
+*.py
+*.png
 .vscode/

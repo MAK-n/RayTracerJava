@@ -47,6 +47,11 @@ class Vec3 {
     public Vec3 divide(double t){
         return multiply(1/t);
     }
+    public void set(Vec3 v){
+        this.e[0]=v.e[0];
+        this.e[1]=v.e[1];
+        this.e[2]=v.e[2];
+    }
     public double length(){
         return Math.sqrt(e[0]*e[0]+e[1]*e[1]+e[2]*e[2]);
     }
@@ -101,5 +106,15 @@ class Vec3 {
         double s = 1e-8;
         return (Math.abs(e[0]) < s) && (Math.abs(e[1]) < s) && (Math.abs(e[2]) < s);
     }
-
+    
+    static Vec3 refract(Vec3 uv, Vec3 n, double etaiOverEtat) {
+        double cosTheta = Math.min(Vec3.dot(uv.negate(), n), 1.0);
+        Vec3 rOutPerpendicular= (uv.add(n.multiply(cosTheta))).multiply(etaiOverEtat);
+        Vec3 rOutParallel=n.multiply(-Math.sqrt(Math.abs(1.0- rOutPerpendicular.lengthSquared())));
+        
+        return rOutPerpendicular.add(rOutParallel);
+    }
+    static Vec3 reflect(Vec3 v, Vec3 n) {
+        return v.sub(n.multiply(2 * Vec3.dot(v, n)));
+    }
 }

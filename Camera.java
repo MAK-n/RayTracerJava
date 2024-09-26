@@ -14,6 +14,8 @@ public class Camera {
     double samplesPerPixel=10.0;
     double pixelSamplesScale;
     int maxDepth=50;
+    double vfov=90;
+
 
     static double linearToGamma(double linear_component){
     if (linear_component > 0)
@@ -81,19 +83,19 @@ public class Camera {
  
          //Camera
         double focalLength = 1.0;
-        double viewportHeight = 2.0;
+        // double viewportHeight = 2.0;
+        double theta= Utils.degreesToRadians(vfov);
+        double h= Math.tan(theta/2.0);
+        double viewportHeight= 2.0*h*focalLength;
         double viewportWidth = viewportHeight * aspectRatio;
         camCentre= new Vec3(0,0,0);
  
          // World
         pixelSamplesScale= 1.0/samplesPerPixel;
-         //ArrayList<Hitable> list = new ArrayList<Hitable>();
-         
-        //CHECK THISSS
-        //  HitableList world = new HitableList();
-        //  world.add(new Sphere(new Vec3(0.0,0.0,-1.0), 0.5));
-        //  //world.add(new Sphere(new Vec3(0.3,0.0,-1.0), 0.3));
-        //  world.add(new Sphere(new Vec3(0.0,-100.5,-1.0), 100));
+
+
+        //Camera
+
  
  
  

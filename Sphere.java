@@ -11,7 +11,7 @@ public class Sphere extends Hitable {
     @Override
     public boolean hit(Ray r, Interval ray_t, HitRecord rec){
         Vec3 oc= center.sub(r.origin());
-        double a= r.direction().lengthSquared();
+        double a= (r.direction()).lengthSquared();
         //double b= -2.0*Vec3.dot(oc, r.direction());
         double h= Vec3.dot(oc, r.direction());
         double c= oc.lengthSquared() - radius*radius;

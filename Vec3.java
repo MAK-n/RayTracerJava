@@ -4,15 +4,15 @@ class Vec3 {
     public double[] e;
 
     public Vec3() {
-        e = new double[] { 0, 0, 0 };
+        e = new double[] { 0.0, 0.0, 0.0 };
     }
 
     public Vec3(double e0) {
-        e = new double[] { e0, 0, 0 };
+        e = new double[] { e0, 0.0, 0.0 };
     }
 
     public Vec3(double e0, double e1) {
-        e = new double[] { e0, e1, 0 };
+        e = new double[] { e0, e1, 0.0 };
     }
 
     public Vec3(double e0, double e1, double e2) {
@@ -43,6 +43,13 @@ class Vec3 {
         e[i] = value;
     }
 
+    public void set(Vec3 v) {
+        this.e[0] = v.e[0];
+        this.e[1] = v.e[1];
+        this.e[2] = v.e[2];
+    }
+
+
     public Vec3 add(Vec3 v) {
         return new Vec3(e[0] + v.e[0], e[1] + v.e[1], e[2] + v.e[2]);
     }
@@ -61,12 +68,6 @@ class Vec3 {
 
     public Vec3 divide(double t) {
         return multiply(1 / t);
-    }
-
-    public void set(Vec3 v) {
-        this.e[0] = v.e[0];
-        this.e[1] = v.e[1];
-        this.e[2] = v.e[2];
     }
 
     public double length() {
@@ -92,8 +93,7 @@ class Vec3 {
     }
 
     public String toString() {
-        String s = "(" + e[0] + "," + e[1] + "," + e[2] + ")";
-        return s;
+        return "(" + e[0] + "," + e[1] + "," + e[2] + ")";
     }
 
     public static Vec3 random() {
@@ -127,14 +127,24 @@ class Vec3 {
     }
 
     static Vec3 refract(Vec3 uv, Vec3 n, double etaiOverEtat) {
+
         double cosTheta = Math.min(Vec3.dot(uv.negate(), n), 1.0);
         Vec3 rOutPerpendicular = (uv.add(n.multiply(cosTheta))).multiply(etaiOverEtat);
-        Vec3 rOutParallel = n.multiply(Math.sqrt(Math.abs(1.0 - rOutPerpendicular.lengthSquared()))).negate();
+        Vec3 rOutParallel = n.multiply(-Math.sqrt(Math.abs(1.0 - rOutPerpendicular.lengthSquared())));
 
         return rOutPerpendicular.add(rOutParallel);
     }
 
     static Vec3 reflect(Vec3 v, Vec3 n) {
         return v.sub(n.multiply(2 * Vec3.dot(v, n)));
+    }
+
+    static Vec3 randomInUnitDisk() {
+        while (true) {
+            Vec3 p= new Vec3(Utils.randomDouble(-1, 1), Utils.randomDouble(-1, 1), 0);
+            if(p.lengthSquared() < 1){
+                return p;
+            }
+        }
     }
 }

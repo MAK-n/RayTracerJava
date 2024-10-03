@@ -7,7 +7,7 @@ public class Lambertian extends Material {
 
     @Override
     public boolean scatter(Ray rIn, HitRecord rec, Vec3 attenuation, Ray scattered) {
-        Vec3 scatterDirection= rec.normal.add(Vec3.randomUnitVector());
+        Vec3 scatterDirection= Vec3.unitVector(rec.normal.add(Vec3.randomUnitVector()));
 
         if(scatterDirection.nearZero()) {
             scatterDirection= rec.normal;

@@ -17,14 +17,14 @@ public class HitRecord {
         this.t=0;
     }
 
-    boolean front_face;
+    public boolean front_face;
 
     public void set_face_normal(Ray r, Vec3 outward_normal) {
         // Sets the hit record normal vector.
         // NOTE: the parameter `outward_normal` is assumed to have unit length.
 
         front_face = Vec3.dot(r.direction(), outward_normal) < 0;
-        normal= front_face ? outward_normal : outward_normal.negate();
+        this.normal= front_face ? outward_normal : outward_normal.negate();
         //System.out.println(normal.x()+" "+normal.y()+" "+normal.z());
     }
 

@@ -59,7 +59,7 @@ This will generate an output image in the **PPM** format (e.g., `image.ppm`). Yo
 
 Once the refraction issue is fixed and the scene is rendered correctly, the final image will be placed here:
 
-![Final Image]([https://github-production-user-asset-6210df.s3.amazonaws.com/73781030/387848231-2d90c283-d042-4f05-823f-d5ccd78b37a1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20241119%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241119T215304Z&X-Amz-Expires=300&X-Amz-Signature=92394439fe7129774da451dd764c0b86627438307079dd91eb9135b8b087ddb3&X-Amz-SignedHeaders=host](https://media.discordapp.net/attachments/462573782511517713/1307454264167239743/image.png?ex=6761416b&is=675fefeb&hm=90e08a7061f36dc534c3fa1f8caf688de9e20a7828e08fdd68739df69e97b28e&=&format=webp&quality=lossless))
+![Final Image]([https://media.discordapp.net/attachments/462573782511517713/1307454264167239743/image.png?ex=6761416b&is=675fefeb&hm=90e08a7061f36dc534c3fa1f8caf688de9e20a7828e08fdd68739df69e97b28e&=&format=webp&quality=lossless])
 
 ---
 

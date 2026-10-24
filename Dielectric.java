@@ -8,7 +8,7 @@ public class Dielectric extends Material {
 
     @Override
     public boolean scatter(Ray rIn, HitRecord rec, Vec3 attenuation, Ray scattered) {
-        attenuation.set(new Vec3(0.98, 0.98, 1.0)); // Dielectric material is assumed to be transparent (no attenuation)
+        attenuation.set(new Vec3(1.0, 1.0, 1.0)); // Dielectric material is assumed to be transparent (no attenuation)
 
         double ri = rec.front_face ? (1.0 / refractiveIndex) : (refractiveIndex); // Refraction index
         Vec3 unitDirection = Vec3.unitVector(rIn.direction());

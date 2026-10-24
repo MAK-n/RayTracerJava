@@ -6,8 +6,8 @@ public class Interval {
         this.max = max;
     }
     Interval(){
-        this.min= Double.MIN_VALUE;
-        this.max= Double.MAX_VALUE;
+        this.min= Double.POSITIVE_INFINITY;
+        this.max= Double.NEGATIVE_INFINITY;
     }
 
     double size(){
@@ -29,6 +29,6 @@ public class Interval {
     }
 
 
-    static final Interval EMPTY = new Interval(Double.MIN_VALUE,Double.MAX_VALUE);
-    static final Interval UNIVERSE = new Interval(Double.MIN_VALUE,Double.MAX_VALUE);
+    static final Interval EMPTY = new Interval(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+    static final Interval UNIVERSE = new Interval(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 }

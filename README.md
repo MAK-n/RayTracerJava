@@ -11,10 +11,6 @@ This project is a Java implementation of the concepts presented in *Ray Tracing 
 - **Reflection**: Mirror-like reflective surfaces (such as metal).
 - **Refraction**: Glass-like dielectric materials that bend light as it passes through.
 
-### Known Issues
-
-- **Dielectric Refraction**: The refraction effect for dielectric materials (glass-like spheres) is not behaving as expected. Instead of showing a smooth glass effect, the refraction produces a hole in the middle of the dielectric sphere. This issue is likely caused by incorrect refraction vector calculation or improper handling of the refraction rays. Debugging efforts are ongoing to resolve this issue.
-
 ---
 
 ## Project Setup
@@ -57,9 +53,7 @@ This will generate an output image in the **PPM** format (e.g., `image.ppm`). Yo
 
 ## Current Image
 
-Once the refraction issue is fixed and the scene is rendered correctly, the final image will be placed here:
-
-![Final Image](https://media.discordapp.net/attachments/462573782511517713/1307454264167239743/image.png?ex=6761416b&is=675fefeb&hm=90e08a7061f36dc534c3fa1f8caf688de9e20a7828e08fdd68739df69e97b28e&=&format=webp&quality=lossless)
+![Final Image](/out/image.png)
 
 ---
 

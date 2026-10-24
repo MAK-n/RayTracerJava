@@ -3,3 +3,5 @@
 *.py
 *.png
 .vscode/
+/out/*
+!/out/image.png

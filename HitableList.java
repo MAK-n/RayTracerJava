@@ -31,6 +31,7 @@ public class HitableList extends Hitable {
                 rec.normal = temp_rec.normal;
                 rec.t = temp_rec.t;
                 rec.mat = temp_rec.mat;
+                rec.front_face = temp_rec.front_face;
             }
         }
 
